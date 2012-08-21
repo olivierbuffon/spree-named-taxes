@@ -1,7 +1,7 @@
 module SpreeNamedTaxes
   class Engine < Rails::Engine
     engine_name 'spree_named_taxes'
-    isolate_namespace Spree
+    # isolate_namespace Spree
 
     config.autoload_paths += %W(#{config.root}/lib)
 

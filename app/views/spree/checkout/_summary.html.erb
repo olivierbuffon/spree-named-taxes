@@ -9,10 +9,23 @@
     <tbody id="summary-order-charges" data-hook>
       <% order.adjustments.eligible.each do |adjustment| %>
       <% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
-        <tr>
-          <td><%= adjustment.label %>: </td>
-          <td><%= number_to_currency adjustment.amount %></td>
-        </tr>
+
+        <% if adjustment.originator_type == 'Spree::TaxRate' %>
+          <tr>
+            <td>
+              <%= adjustment.originator.name %>
+              <%= (adjustment.originator.amount * 100).to_s + "%" if adjustment.originator.display_rate %>:
+
+            </td>
+            <td><%= number_to_currency adjustment.amount %></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td><%= adjustment.label %>: </td>
+            <td><%= number_to_currency adjustment.amount %></td>
+          </tr>
+        <% end %>
+
       <% end %>
     </tbody>
     <tr data-hook="order_total">
