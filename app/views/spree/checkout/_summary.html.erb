@@ -7,26 +7,32 @@
       <td><strong><%= number_to_currency order.item_total %></strong></td>
     </tr>
     <tbody id="summary-order-charges" data-hook>
-      <% order.adjustments.eligible.each do |adjustment| %>
-      <% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+      <% order.adjustments.eligible.tax.each do |adjustment| %>
+        <% next if (adjustment.amount == 0) %>
+        <tr>
+          <td>
+            <%= adjustment.originator.name %>
+            <%= (adjustment.originator.amount * 100).to_s + "%" if adjustment.originator.display_rate %>:
 
-        <% if adjustment.originator_type == 'Spree::TaxRate' %>
-          <tr>
-            <td>
-              <%= adjustment.originator.name %>
-              <%= (adjustment.originator.amount * 100).to_s + "%" if adjustment.originator.display_rate %>:
-
-            </td>
-            <td><%= number_to_currency adjustment.amount %></td>
-          </tr>
-        <% else %>
-          <tr>
-            <td><%= adjustment.label %>: </td>
-            <td><%= number_to_currency adjustment.amount %></td>
-          </tr>
-        <% end %>
-
+          </td>
+          <td><%= number_to_currency adjustment.amount %></td>
+        </tr>
       <% end %>
+
+      <% order.adjustments.eligible.not_shipping.not_tax.each do |adjustment| %>
+        <tr>
+          <td><%= adjustment.label %>: </td>
+          <td><%= number_to_currency adjustment.amount %></td>
+        </tr>
+      <% end %>
+
+      <% order.adjustments.eligible.shipping.each do |adjustment| %>
+        <tr>
+          <td><%= adjustment.label %>: </td>
+          <td><%= number_to_currency adjustment.amount %></td>
+        </tr>
+      <% end %>
+
     </tbody>
     <tr data-hook="order_total">
       <td><strong><%= t(:order_total) %>:</strong></td>
