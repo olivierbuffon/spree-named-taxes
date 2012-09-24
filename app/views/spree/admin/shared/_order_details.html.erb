@@ -24,7 +24,7 @@
   </tbody>
   <tbody id="order-charges" data-hook="order_details_adjustments">
 
-    <% order.adjustments.eligible.tax.each do |adjustment| %>
+    <% @order.adjustments.eligible.tax.each do |adjustment| %>
       <% next if (adjustment.amount == 0) %>
       <tr class="total">
         <td colspan="3">
@@ -37,14 +37,14 @@
       </tr>
     <% end %>
 
-    <% order.adjustments.eligible.not_shipping.not_tax.each do |adjustment| %>
+    <% @order.adjustments.eligible.not_shipping.not_tax.each do |adjustment| %>
       <tr class="total">
         <td colspan="3"><strong><%= adjustment.label %>: </strong></td>
         <td class="total"><span><%= number_to_currency adjustment.amount %></span></td>
       </tr>
     <% end %>
 
-    <% order.adjustments.eligible.shipping.each do |adjustment| %>
+    <% @order.adjustments.eligible.shipping.each do |adjustment| %>
       <tr class="total">
         <td colspan="3"><strong><%= adjustment.label %>: </strong></td>
         <td class="total"><span><%= number_to_currency adjustment.amount %></span></td>
@@ -58,7 +58,7 @@
       <td class="total"><span id="order_total"><%= number_to_currency @order.total %></span></td>
     </tr>
   </tbody>
-  <% if order.price_adjustment_totals.present? %>
+  <% if @order.price_adjustment_totals.present? %>
     <tbody id="price-adjustments" data-hook="order_details_price_adjustments">
       <% @order.price_adjustment_totals.keys.each do |key| %>
         <tr class="total">
